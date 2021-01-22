@@ -1,15 +1,24 @@
 import knex from "knex";
-import express, { Request, Response } from "express";
+import express from "express";
 import dotenv from "dotenv";
 import { AddressInfo } from "net";
-
+import  insertStudent  from "./endpoints/createStudent";
+import insertTeacher from "./endpoints/createTeacher";
+import getStudentById from "./endpoints/getStudentById";
+import createTableMission from "./endpoints/createTableMission";
+import createTableStudent from "./endpoints/createTableStudent";
+import createTableStudentHobby from "./endpoints/createTableStudentHobby";
+import createTableTeacher from "./endpoints/createTableTeacher";
+import createTableTeacherSpecialty from "./endpoints/createTableTeacherSpecialty";
+import createMission from "./endpoints/createMission";
+ 
 /******************************************************/
 
 dotenv.config();
 
 /******************************************************/
 
-const connection = knex({
+export const connection = knex({
     client: "mysql",
     connection: {
         host: process.env.DB_HOST,
@@ -20,11 +29,32 @@ const connection = knex({
     }
 })
 
-/******************************************************/
-
 const app = express();
 
 app.use(express.json());
+
+/******************************************************/
+
+app.post("/createtablemission", createTableMission);
+
+app.post("/createtablestudent", createTableStudent);
+
+app.post("/createtablestudenthobby", createTableStudentHobby)
+
+app.post("/createtableteacher", createTableTeacher);
+
+app.post("/createtableteacherspecialty", createTableTeacherSpecialty);
+
+app.post("/createstudent", insertStudent);
+
+app.post("/createteacher", insertTeacher);
+
+app.post("/createmission", createMission);
+
+app.get("/student/:id", getStudentById);
+
+
+/******************************************************/
 
 const server = app.listen(process.env.PORT || 3003, () => {
     if(server) {
